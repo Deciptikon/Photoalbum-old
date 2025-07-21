@@ -173,6 +173,12 @@ export default {
   padding-right: 20px;
 }
 
+.photo-info {
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
 .navigation {
   display: flex;
   justify-content: space-between;
