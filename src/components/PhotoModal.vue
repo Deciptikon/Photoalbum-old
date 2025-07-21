@@ -3,8 +3,18 @@
     <div class="modal-content">
       <span class="close" @click="close">&times;</span>
 
-      <div class="main-photo">
-        <img :src="fullsizeUrl" :alt="`Фото ${currentPhoto}`" />
+      <div class="photo-pair">
+        <!-- Передняя часть фотографии -->
+        <div class="photo-side photo-front">
+          <img :src="frontUrl" :alt="`Фото ${currentPhoto} (перед)`" />
+          <div class="side-label">Лицевая сторона</div>
+        </div>
+
+        <!-- Задняя часть фотографии -->
+        <div class="photo-side photo-back">
+          <img :src="backUrl" :alt="`Фото ${currentPhoto} (зад)`" />
+          <div class="side-label">Оборотная сторона</div>
+        </div>
       </div>
 
       <div class="photo-info">
@@ -34,8 +44,11 @@ export default {
     }
   },
   computed: {
-    fullsizeUrl() {
-      return this.getFullsizeUrl(this.currentPhoto)
+    frontUrl() {
+      return this.getFrontUrl(this.currentPhoto)
+    },
+    backUrl() {
+      return this.getBackUrl(this.currentPhoto)
     },
   },
   watch: {
@@ -44,21 +57,22 @@ export default {
     },
   },
   methods: {
-    getFullsizeUrl(n) {
-      return `./images/photoalbum/photo${n}.jpg`
+    getFrontUrl(n) {
+      // Формат: photo1.jpg, photo2.jpg и т.д.
+      return `./images/photoalbum/photo${n}_front.jpg`
+    },
+    getBackUrl(n) {
+      // Формат: photo1_back.jpg, photo2_back.jpg и т.д.
+      return `./images/photoalbum/photo${n}_back.jpg`
     },
     close() {
       this.$emit('close')
     },
     next() {
-      if (this.currentPhoto < this.photoCount) {
-        this.currentPhoto++
-      }
+      if (this.currentPhoto < this.photoCount) this.currentPhoto++
     },
     prev() {
-      if (this.currentPhoto > 1) {
-        this.currentPhoto--
-      }
+      if (this.currentPhoto > 1) this.currentPhoto--
     },
     handleKeydown(e) {
       switch (e.key) {
@@ -124,24 +138,39 @@ export default {
   color: #f00;
 }
 
-.main-photo {
-  flex-grow: 1;
+.photo-pair {
   display: flex;
+  gap: 20px;
   justify-content: center;
-  align-items: center;
   margin: 20px 0;
 }
 
-.main-photo img {
-  max-width: 100%;
-  max-height: 70vh;
-  object-fit: contain;
+.photo-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  max-width: 45%;
 }
 
-.photo-info {
-  text-align: center;
-  margin-bottom: 15px;
-  font-size: 18px;
+.photo-side img {
+  max-width: 100%;
+  max-height: 60vh;
+  object-fit: contain;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.side-label {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.photo-front {
+  border-right: 1px dashed #ccc;
+  padding-right: 20px;
 }
 
 .navigation {
@@ -168,5 +197,25 @@ export default {
 .nav-btn:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 768px) {
+  .photo-pair {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .photo-side {
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .photo-front {
+    border-right: none;
+    border-bottom: 1px dashed #ccc;
+    padding-right: 0;
+    padding-bottom: 20px;
+  }
 }
 </style>

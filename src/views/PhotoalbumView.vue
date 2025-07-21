@@ -31,14 +31,14 @@ export default {
   },
   data() {
     return {
-      photoCount: 26,
+      photoCount: 5,
       isModalOpen: false,
       currentPhoto: 1,
     }
   },
   methods: {
     getThumbnailUrl(n) {
-      return `./images/photoalbum/photo${n}.jpg`
+      return `./images/photoalbum/photo${n}_mini.jpg`
     },
     openModal(n) {
       this.currentPhoto = n
