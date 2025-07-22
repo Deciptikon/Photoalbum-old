@@ -38,6 +38,9 @@ export default {
   },
   methods: {
     getThumbnailUrl(n) {
+      if (import.meta.env.VITE_DEBUG_MODE === 'true') {
+        return `/images/photoalbum/photo${n}_mini.jpg`
+      }
       return `./images/photoalbum/photo${n}_mini.jpg`
     },
     openModal(n) {

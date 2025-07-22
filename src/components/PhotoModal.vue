@@ -16,7 +16,7 @@
       <div class="photo-pair">
         <div class="photo-side photo-front">
           <img :src="frontUrl" :alt="`Фото ${currentPhoto} (перед)`" />
-          <div class="side-label">Передняя часть</div>
+          <div class="side-label">Лицевая сторона</div>
         </div>
 
         <div class="photo-side photo-back">
@@ -59,11 +59,15 @@ export default {
   },
   methods: {
     getFrontUrl(n) {
-      // Формат: photo1.jpg, photo2.jpg и т.д.
+      if (import.meta.env.VITE_DEBUG_MODE === 'true') {
+        return `/images/photoalbum/photo${n}_front.jpg`
+      }
       return `./images/photoalbum/photo${n}_front.jpg`
     },
     getBackUrl(n) {
-      // Формат: photo1_back.jpg, photo2_back.jpg и т.д.
+      if (import.meta.env.VITE_DEBUG_MODE === 'true') {
+        return `/images/photoalbum/photo${n}_back.jpg`
+      }
       return `./images/photoalbum/photo${n}_back.jpg`
     },
     close() {
@@ -116,7 +120,7 @@ export default {
 
 .modal-content {
   background-color: #8f8f8f;
-  padding: 20px;
+  padding: 00px;
   border-radius: 8px;
   max-width: 90%;
   max-height: 90%;
@@ -133,6 +137,7 @@ export default {
   font-weight: bold;
   cursor: pointer;
   color: #333;
+  z-index: 100;
 }
 
 .close:hover {
@@ -141,7 +146,7 @@ export default {
 
 .photo-pair {
   display: flex;
-  gap: 20px;
+  gap: 0px;
   justify-content: center;
   margin: 20px 0;
 }
@@ -174,6 +179,10 @@ export default {
   padding-right: 20px;
 }
 
+.photo-back {
+  padding-left: 20px;
+}
+
 .photo-info {
   text-align: center;
   margin-bottom: 15px;
@@ -182,24 +191,25 @@ export default {
 
 /* Стили для навигационных кнопок */
 .photo-navigation {
-  position: relative;
+  position: absolute;
   width: 100%;
-  margin-bottom: 10px;
+  height: 100%;
 }
 
 .nav-btn {
   position: absolute;
   top: 0;
   height: 100%;
-  width: 50px;
+  width: 25%;
   background: rgba(255, 255, 255, 0.2);
   border: none;
   color: white;
   font-size: 2rem;
   cursor: pointer;
-  opacity: 0.7;
+  opacity: 0;
   transition: all 0.3s ease;
   z-index: 10;
+  margin: 0px;
 }
 
 .nav-btn:hover {
@@ -208,16 +218,18 @@ export default {
 }
 
 .nav-btn:disabled {
-  opacity: 0.2;
+  opacity: 0.1;
   cursor: not-allowed;
 }
 
 .nav-prev {
   left: 0;
+  font-size: 90px;
 }
 
 .nav-next {
   right: 0;
+  font-size: 90px;
 }
 
 /* Адаптация для мобильных устройств */
@@ -233,6 +245,13 @@ export default {
   }
 
   .photo-front {
+    border-right: none;
+    border-bottom: 1px dashed #ccc;
+    padding-right: 0;
+    padding-bottom: 20px;
+  }
+
+  .photo-back {
     border-right: none;
     border-bottom: 1px dashed #ccc;
     padding-right: 0;
