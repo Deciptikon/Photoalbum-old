@@ -3,14 +3,22 @@
     <div class="modal-content">
       <span class="close" @click="close">&times;</span>
 
+      <!-- Навигационные кнопки -->
+      <div class="photo-navigation">
+        <button @click="prev" :disabled="currentPhoto === 1" class="nav-btn nav-prev">&lt;</button>
+
+        <button @click="next" :disabled="currentPhoto === photoCount" class="nav-btn nav-next">
+          &gt;
+        </button>
+      </div>
+
+      <!-- Основной контент с фотографиями -->
       <div class="photo-pair">
-        <!-- Передняя часть фотографии -->
         <div class="photo-side photo-front">
           <img :src="frontUrl" :alt="`Фото ${currentPhoto} (перед)`" />
-          <div class="side-label">Лицевая сторона</div>
+          <div class="side-label">Передняя часть</div>
         </div>
 
-        <!-- Задняя часть фотографии -->
         <div class="photo-side photo-back">
           <img :src="backUrl" :alt="`Фото ${currentPhoto} (зад)`" />
           <div class="side-label">Оборотная сторона</div>
@@ -19,13 +27,6 @@
 
       <div class="photo-info">
         <p>Фото {{ currentPhoto }} из {{ photoCount }}</p>
-      </div>
-
-      <div class="navigation">
-        <button @click="prev" :disabled="currentPhoto === 1" class="nav-btn">&lt; Назад</button>
-        <button @click="next" :disabled="currentPhoto === photoCount" class="nav-btn">
-          Вперед &gt;
-        </button>
       </div>
     </div>
   </div>
@@ -179,30 +180,44 @@ export default {
   font-size: 18px;
 }
 
-.navigation {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
+/* Стили для навигационных кнопок */
+.photo-navigation {
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
 }
 
 .nav-btn {
-  padding: 8px 16px;
-  font-size: 16px;
-  background-color: #59a382;
-  color: white;
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 50px;
+  background: rgba(255, 255, 255, 0.2);
   border: none;
-  border-radius: 4px;
+  color: white;
+  font-size: 2rem;
   cursor: pointer;
-  transition: background-color 0.3s;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+  z-index: 10;
 }
 
-.nav-btn:hover:not(:disabled) {
-  background-color: #316a4f;
+.nav-btn:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.4);
 }
 
 .nav-btn:disabled {
-  background-color: #cccccc;
+  opacity: 0.2;
   cursor: not-allowed;
+}
+
+.nav-prev {
+  left: 0;
+}
+
+.nav-next {
+  right: 0;
 }
 
 /* Адаптация для мобильных устройств */
@@ -222,6 +237,20 @@ export default {
     border-bottom: 1px dashed #ccc;
     padding-right: 0;
     padding-bottom: 20px;
+  }
+
+  .nav-btn {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .nav-prev {
+    left: 10px;
+  }
+
+  .nav-next {
+    right: 10px;
   }
 }
 </style>
