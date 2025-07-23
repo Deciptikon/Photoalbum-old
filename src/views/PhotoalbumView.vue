@@ -31,7 +31,7 @@ export default {
   },
   data() {
     return {
-      photoCount: 5,
+      photoCount: 74,
       isModalOpen: false,
       currentPhoto: 1,
     }
@@ -39,9 +39,9 @@ export default {
   methods: {
     getThumbnailUrl(n) {
       if (import.meta.env.VITE_DEBUG_MODE === 'true') {
-        return `/images/photoalbum/photo${n}_mini.jpg`
+        return `/images/photoalbum/photo_mini (${n}).jpg`
       }
-      return `./images/photoalbum/photo${n}_mini.jpg`
+      return `./images/photoalbum/photo_mini (${n}).jpg`
     },
     openModal(n) {
       this.currentPhoto = n

@@ -60,15 +60,15 @@ export default {
   methods: {
     getFrontUrl(n) {
       if (import.meta.env.VITE_DEBUG_MODE === 'true') {
-        return `/images/photoalbum/photo${n}_front.jpg`
+        return `/images/photoalbum/photo_front (${n}).jpg`
       }
-      return `./images/photoalbum/photo${n}_front.jpg`
+      return `./images/photoalbum/photo_front (${n}).jpg`
     },
     getBackUrl(n) {
       if (import.meta.env.VITE_DEBUG_MODE === 'true') {
-        return `/images/photoalbum/photo${n}_back.jpg`
+        return `/images/photoalbum/photo_back (${n}).jpg`
       }
-      return `./images/photoalbum/photo${n}_back.jpg`
+      return `./images/photoalbum/photo_back (${n}).jpg`
     },
     close() {
       this.$emit('close')
