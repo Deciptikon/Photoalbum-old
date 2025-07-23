@@ -293,14 +293,19 @@ export default {
 
 /* Адаптация для мобильных устройств */
 @media (max-width: 768px) {
+  .modal-content {
+    max-height: 95vh;
+    overflow-y: auto;
+  }
+
   .photo-pair {
     flex-direction: column;
     align-items: center;
   }
 
   .photo-side {
-    max-width: 100%;
-    margin-bottom: 20px;
+    max-width: 95%;
+    margin-bottom: 0px;
   }
 
   .photo-front {
@@ -313,7 +318,7 @@ export default {
   .photo-back {
     border-right: none;
     border-bottom: 1px dashed #ccc;
-    padding-right: 0;
+    padding-left: 0px;
     padding-bottom: 20px;
   }
 
