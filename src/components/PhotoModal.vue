@@ -4,7 +4,11 @@
       <span
         class="toggle"
         @click="toggle"
-        :title="isToggleActive ? 'Выключить режим' : 'Включить режим'"
+        :title="
+          isToggleActive
+            ? 'Показать оригинал. (Кнопка `+`)'
+            : 'Показать автокоррекцию. (Кнопка `+`)'
+        "
       >
         {{ isToggleActive ? '◼' : '◻' }}
       </span>
@@ -12,9 +16,21 @@
 
       <!-- Навигационные кнопки -->
       <div class="photo-navigation">
-        <button @click="prev" :disabled="currentPhoto === 1" class="nav-btn nav-prev">&lt;</button>
+        <button
+          @click="prev"
+          :disabled="currentPhoto === 1"
+          :title="'Предыдущее изображение. (Кнопка `Left`)'"
+          class="nav-btn nav-prev"
+        >
+          &lt;
+        </button>
 
-        <button @click="next" :disabled="currentPhoto === photoCount" class="nav-btn nav-next">
+        <button
+          @click="next"
+          :disabled="currentPhoto === photoCount"
+          :title="'Следующее изображение. (Кнопка `Right`)'"
+          class="nav-btn nav-next"
+        >
           &gt;
         </button>
       </div>
