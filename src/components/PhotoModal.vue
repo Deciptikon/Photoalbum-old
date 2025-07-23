@@ -1,6 +1,13 @@
 <template>
   <div v-if="isOpen" class="modal" @click.self="close">
     <div class="modal-content">
+      <span
+        class="toggle"
+        @click="toggle"
+        :title="isToggleActive ? 'Выключить режим' : 'Включить режим'"
+      >
+        {{ isToggleActive ? '◼' : '◻' }}
+      </span>
       <span class="close" @click="close">&times;</span>
 
       <!-- Навигационные кнопки -->
@@ -42,6 +49,8 @@ export default {
   data() {
     return {
       currentPhoto: this.initialPhoto,
+      isToggleActive: false,
+      isChanging: false,
     }
   },
   computed: {
@@ -59,25 +68,49 @@ export default {
   },
   methods: {
     getFrontUrl(n) {
-      if (import.meta.env.VITE_DEBUG_MODE === 'true') {
-        return `/images/photoalbum/photo_front (${n}).jpg`
+      let str = `/images/photoalbum/photo_front (${n}).jpg`
+      if (this.isToggleActive) {
+        str = `/images/photoalbum/photo_front_norm (${n}).jpg`
       }
-      return `./images/photoalbum/photo_front (${n}).jpg`
+
+      if (import.meta.env.VITE_DEBUG_MODE !== 'true') {
+        str = `.` + str
+      }
+      return str
     },
     getBackUrl(n) {
-      if (import.meta.env.VITE_DEBUG_MODE === 'true') {
-        return `/images/photoalbum/photo_back (${n}).jpg`
+      let str = `/images/photoalbum/photo_back (${n}).jpg`
+
+      if (import.meta.env.VITE_DEBUG_MODE !== 'true') {
+        str = `.` + str
       }
-      return `./images/photoalbum/photo_back (${n}).jpg`
+      return str
+    },
+    toggle() {
+      this.isToggleActive = !this.isToggleActive
     },
     close() {
       this.$emit('close')
     },
     next() {
-      if (this.currentPhoto < this.photoCount) this.currentPhoto++
+      if (this.isChanging) return
+      if (this.currentPhoto < this.photoCount) {
+        this.currentPhoto++
+        this.isChanging = true
+        setTimeout(() => {
+          this.isChanging = false
+        }, 200)
+      }
     },
     prev() {
-      if (this.currentPhoto > 1) this.currentPhoto--
+      if (this.isChanging) return
+      if (this.currentPhoto > 1) {
+        this.currentPhoto--
+        this.isChanging = true
+        setTimeout(() => {
+          this.isChanging = false
+        }, 200)
+      }
     },
     handleKeydown(e) {
       switch (e.key) {
@@ -89,6 +122,9 @@ export default {
           break
         case 'Escape':
           this.close()
+          break
+        case '+':
+          this.toggle()
           break
       }
     },
@@ -129,14 +165,36 @@ export default {
   flex-direction: column;
 }
 
-.close {
+/* Стили для кнопки переключателя */
+.toggle {
   position: absolute;
+  left: 15px;
   top: 10px;
-  right: 15px;
-  font-size: 28px;
+  font-size: 40px;
   font-weight: bold;
   cursor: pointer;
-  color: #333;
+  color: #ffffff;
+  z-index: 100;
+}
+
+.toggle:hover {
+  color: #2196f3;
+}
+
+/* Стиль для активного состояния */
+.toggle.active {
+  color: #2196f3;
+}
+
+/* Стиль для кнопки закрытия */
+.close {
+  position: absolute;
+  top: 0px;
+  right: 15px;
+  font-size: 50px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #ffffff;
   z-index: 100;
 }
 
@@ -144,6 +202,7 @@ export default {
   color: #f00;
 }
 
+/* Стиль для пары фото */
 .photo-pair {
   display: flex;
   gap: 0px;
